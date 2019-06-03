@@ -38,5 +38,5 @@ def freq_from_midi(midi_note):
 def midi_from_freq(freq_hz):
     return 12 * log2(freq_hz/CONCERT_A_HZ) + 69
 
-def piano_key(midi_note):
+def piano_key_from_midi(midi_note):
         return midi_note - 20
