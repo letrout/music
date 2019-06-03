@@ -64,7 +64,7 @@ class Scale(object):
     def root_note(self, new_root):
         """
         Sets a new root note for the scale
-        :param new_root: note.Note object
+        :param new_root: note.Note object or int (Hz)
         :return: freq_change, the ratio of new root to the previous root
                 (None if no previous root)
         """
@@ -75,7 +75,7 @@ class Scale(object):
         elif isinstance(new_root, int):
             new_root_note = note.Note(new_root)
             freq_change = self.freq_change(new_root_note.freq)
-            self.__root_note = new_root
+            self.__root_note = new_root_note
         return freq_change
 
     def freq_change(self, new_freq):
