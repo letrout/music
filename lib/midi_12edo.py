@@ -25,6 +25,11 @@ def notes_df():
     })
 
 def octave_from_midi(midi_note):
+    """
+    Get octave number from MIDI number
+    :param midi_note: MIDI note number
+    :return: octave number
+    """
     octave = None
     if midi_note >= 12:
         octave = int((midi_note / 12) - 1)
@@ -33,10 +38,25 @@ def octave_from_midi(midi_note):
     return octave
 
 def freq_from_midi(midi_note):
+    """
+    Frequency of MIDI note
+    :param midi_note: MIDI note number
+    :return: frequency in Hz
+    """
     return CONCERT_A_HZ * 2 ** ((midi_note - 69) / 12)
 
 def midi_from_freq(freq_hz):
+    """
+    MIDI note number for a given frequency
+    :param freq_hz: frequency in Hz
+    :return: MIDI note number (float, may need rounding by caller)
+    """
     return 12 * log2(freq_hz/CONCERT_A_HZ) + 69
 
 def piano_key_from_midi(midi_note):
-        return midi_note - 20
+    """
+    Piano key number for a MIDI note number
+    :param midi_note: MIDI note number
+    :return: piano key number
+    """
+    return midi_note - 20
