@@ -14,11 +14,10 @@ def notes_df():
     :return: dataframe
     """
     notes_sharps = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
-    accidental = [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]
-    notes_flats =['C', 'D', 'D', 'E', 'E', 'F', 'G', 'G', 'A', 'B', 'B']
     accidentals = [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]
+    notes_flats =['C', 'D', 'D', 'E', 'E', 'F', 'G', 'G', 'A', 'A', 'B', 'B']
     return pd.DataFrame({
-        'halfstep': range(0, 11),
+        'halfstep': range(0, 12),
         'note_sharp': notes_sharps,
         'note_flat': notes_flats,
         'accidental': accidentals
