@@ -65,21 +65,28 @@ class Scale(object):
         """
         Sets a new root note for the scale
         :param new_root: note.Note object or int (Hz)
-        :return: freq_change, the ratio of new root to the previous root
+        :return: freq_ratio, the ratio of new root to the previous root
                 (None if no previous root)
         """
-        freq_change = None
+        freq_ratio = None
         if isinstance(new_root, note.Note):
-            freq_change = self.freq_change(new_root.freq)
+            freq_ratio = self.freq_ratio(new_root.freq)
             self.__root_note = new_root
         elif isinstance(new_root, int):
             new_root_note = note.Note(new_root)
-            freq_change = self.freq_change(new_root_note.freq)
+            freq_ratio = self.freq_ratio(new_root_note.freq)
             self.__root_note = new_root_note
-        return freq_change
+        return freq_ratio
 
-    def freq_change(self, new_freq):
-        freq_change = None
+    def freq_ratio(self, new_freq):
+        """
+        Calculate the ratio of some frequency to our root note
+        (does not change our current root note)
+        :param new_freq: the new frequency to compare (Hz)
+        :return: ratio of new frequency / our root
+                 None if we don't currently have a root note frequency
+        """
+        freq_ratio = None
         if self.root_note is not None and self.root_note.freq:
-            freq_change = new_freq / self.root_note.freq
-        return freq_change
+            freq_ratio = new_freq / self.root_note.freq
+        return freq_ratio

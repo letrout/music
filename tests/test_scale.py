@@ -24,4 +24,4 @@ def test_scale_badroot_hz():
 
 def test_scale_freq_change():
     test = scale.Scale(440)
-    assert test.freq_change(660) == 1.5
+    assert test.freq_ratio(660) == 1.5
