@@ -25,3 +25,11 @@ def test_scale_badroot_hz():
 def test_scale_freq_change():
     test = scale.Scale(440)
     assert test.freq_ratio(660) == 1.5
+
+def test_scale_12edo():
+    test = scale.Scale()
+    for i in range(1,12):
+        test.add_tone(i * 100)
+    assert test.tones[8] == 800
+    assert test.tones[0] == 0
+    assert len(test.tones) == 12
