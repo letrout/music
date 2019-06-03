@@ -23,7 +23,9 @@ class Scale(object):
         :param root_note: Note object, root note for the scale (default None)
         """
         self.__tones = [0]
-        self.__root_note = root_note
+        self.__root_note = None
+
+        self.root_note = root_note
 
     @property
     def tones(self):
@@ -68,7 +70,16 @@ class Scale(object):
         """
         freq_change = None
         if isinstance(new_root, note.Note):
-            if self.__root_note.freq:
-                freq_change = new_root.freq / self.__root_note.freq
+            freq_change = self.freq_change(new_root.freq)
             self.__root_note = new_root
+        elif isinstance(new_root, int):
+            new_root_note = note.Note(new_root)
+            freq_change = self.freq_change(new_root_note.freq)
+            self.__root_note = new_root
+        return freq_change
+
+    def freq_change(self, new_freq):
+        freq_change = None
+        if self.root_note is not None and self.root_note.freq:
+            freq_change = new_freq / self.root_note.freq
         return freq_change
