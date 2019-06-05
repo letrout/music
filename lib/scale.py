@@ -17,7 +17,7 @@ class Scale(object):
     """
     Class to hold a musical scale
     """
-    def __init__(self, root_note=None):
+    def __init__(self, root_note=None, tones=None):
         """
         Constructor
         :param root_note: Note object, root note for the scale (default None)
@@ -26,6 +26,12 @@ class Scale(object):
         self.__root_note = None
 
         self.root_note = root_note
+        if isinstance(tones, (list,)):
+            try:
+                for tone in sorted(tones):
+                    self.add_tone(tone)
+            except TypeError:
+                pass
 
     @property
     def tones(self):
@@ -40,12 +46,16 @@ class Scale(object):
         Add a tone to the scale
         :param cents: difference from scale root, in cents
         :return: new position of the tone in the scale
+                 None if invalid cents value
                  -1 if tone already exists in the scale
         Raises ValueError if cents out of range
         """
+        try:
+            float(cents)
+        except ValueError:
+            return None
         if not MIN_CENTS < cents <= MAX_CENTS:
-            raise ValueError("cents must be between {0} and {1}".format(
-                MIN_CENTS, MAX_CENTS))
+            return None
         if cents in self.tones:
             return -1
         new_position = bisect.bisect(self.tones, cents)
