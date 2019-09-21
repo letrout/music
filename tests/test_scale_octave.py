@@ -12,6 +12,6 @@ def test_scale_tone1200():
 
 def test_scale_tone_overmax():
     test = scale_octave.ScaleOctave()
-    retval = test.add_tone(scale_octave.MAX_CENTS + 1)
+    retval = test.add_tone(scale_octave.OCTAVE_CENTS + 1)
     assert retval is None
     assert test.tones == [0]
