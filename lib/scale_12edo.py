@@ -7,11 +7,14 @@ Extends ./scale.py
 
 import scale_octave
 
-SEMITONE_CENTS = 50
+SEMITONE_CENTS = 100
+HALF = SEMITONE_CENTS
+WHOLE = HALF * 2
+WHOLEHALF = WHOLE + HALF
 
-class Scale12Edo(scale_octave.ScaleOctave):
+class Scale12EDO(scale_octave.ScaleOctave):
     def __init__(self, root_note=None, tones=None):
-        super(Scale12Edo, self).__init__(root_note, tones)
+        super(Scale12EDO, self).__init__(root_note, tones)
 
     def add_tone(self, cents):
         if cents % SEMITONE_CENTS != 0:
