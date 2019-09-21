@@ -1,11 +1,15 @@
 import sys
 
 sys.path.insert(0, '../lib')
-import scale
+import scale_12edo
 
-SEMI = 100
-WHOLE = 2 * SEMI
-EDO12_MAJ = [WHOLE, WHOLE, SEMI, WHOLE, WHOLE, WHOLE, SEMI]
+MAJOR = [scale_12edo.WHOLE,
+         scale_12edo.WHOLE,
+         scale_12edo.HALF,
+         scale_12edo.WHOLE,
+         scale_12edo.WHOLE,
+         scale_12edo.WHOLE,
+         scale_12edo.HALF]
 MODE = {
     'ionian': 0,
     'dorian': 1,
@@ -18,21 +22,21 @@ MODE = {
 
 # 12 EDO scales
 
-def edo12_chromatic():
-    myscale = scale.Scale(list(range(100, 1200, 100)))
+def chromatic():
+    myscale = scale_12edo.Scale12EDO(list(range(100, 1200, 100)))
     return myscale
 
-def edo12_mode(mode):
+def mode(mode):
     if mode not in MODE:
         return None
-    myscale = scale.Scale()
-    steps = (EDO12_MAJ[MODE[mode]:] + EDO12_MAJ[:MODE[mode]])
+    myscale = scale_12edo.Scale12EDO()
+    steps = (MAJOR[MODE[mode]:] + MAJOR[:MODE[mode]])
     for step in steps:
         myscale.add_tone(step)
     return myscale
 
-def edo12_major():
-    return edo12_mode('ionian')
+def major():
+    return mode('ionian')
 
-def edo12_natminor():
-    return edo12_mode('aeolian')
+def natminor():
+    return mode('aeolian')
