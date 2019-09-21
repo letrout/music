@@ -11,7 +11,7 @@ import bisect
 import note
 
 MIN_CENTS = 0
-MAX_CENTS = 1200
+
 
 class Scale(object):
     """
@@ -21,6 +21,7 @@ class Scale(object):
         """
         Constructor
         :param root_note: Note object, root note for the scale (default None)
+        :param tones: List of tones, each tone the number of cents above root
         """
         self.__tones = [0]
         self.__root_note = None
@@ -54,7 +55,7 @@ class Scale(object):
             float(cents)
         except ValueError:
             return None
-        if not MIN_CENTS < cents <= MAX_CENTS:
+        if cents < MIN_CENTS:
             return None
         if cents in self.tones:
             return -1
