@@ -26,6 +26,12 @@ def test_scale_freq_change():
     test = scale.Scale(root_note=440)
     assert test.freq_ratio(660) == 1.5
 
+def test_scale_tone_0():
+    test = scale.Scale()
+    assert test.tones == [0]
+    test.add_tone(0)
+    assert test.tones == [0]
+
 def test_scale_single_tones():
     test = scale.Scale()
     for i in range(1,12):
