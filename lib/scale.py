@@ -21,6 +21,7 @@ class Scale(object):
         """
         Constructor
         :param root_note: Note object, root note for the scale (default None)
+        :param tones: List of tones, each tone the number of cents above root
         """
         self.__tones = [0]
         self.__root_note = None
