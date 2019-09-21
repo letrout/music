@@ -1,7 +1,6 @@
 import sys
 
 sys.path.insert(0, '../lib')
-import note
 import scale
 
 SEMI = 100
