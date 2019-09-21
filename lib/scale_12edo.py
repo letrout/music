@@ -36,4 +36,4 @@ class Scale12EDO(scale_octave.ScaleOctave):
         """
         if cents % SEMITONE_CENTS != 0:
             return None
-        return super.add_tone(cents)
+        return super().add_tone(cents)

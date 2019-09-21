@@ -33,4 +33,4 @@ class ScaleOctave(scale.Scale):
         """
         if cents > MAX_CENTS:
             return None
-        return super.add_tone(cents)
+        return super().add_tone(cents)
