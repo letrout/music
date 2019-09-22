@@ -2,8 +2,8 @@
 scale.py
 A class to hold a collection of tones defined as a scale
 (ie all tones within an octave range)
-By default, the scale is defined by relative distances between the tones
-(in cents), unless a root note is defined.
+The scale is defined by relative distances between
+each of the tones and the root
 """
 
 import bisect
@@ -126,9 +126,11 @@ class Scale(object):
         :param degree: the scale degree to retune
         :param cents: the number of cents by which to change the tone
         (can be negative)
-        :return:
+        :return: 0 on success, -1 on error
         """
         # FIXME: stub
+        if degree not in self.degrees:
+            return -1
         return
 
     def remove_degree(self, degree):
@@ -138,6 +140,8 @@ class Scale(object):
         :return: 0 on success, -1 on error
         """
         # FIXME: stub
+        if degree not in self.degrees:
+            return -1
         return
 
     @property
