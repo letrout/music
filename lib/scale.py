@@ -120,6 +120,10 @@ class Scale(object):
         new_degree = self.add_tone(self.degree_tones[degree] + cents)
         return new_degree
 
+    def remove_degree(self, degree):
+        # FIXME: stub
+        return
+
     @property
     def root_note(self):
         """
