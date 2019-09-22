@@ -37,10 +37,18 @@ class Scale(object):
 
     @property
     def degree_tones(self):
+        """
+        getter for __degree_tones
+        :return: dict of degree->tone, where tone is cents above root
+        """
         return self.__degree_tones
 
     @property
     def degrees(self):
+        """
+        The degrees of the scale
+        :return: A sorted list of the scale degrees
+        """
         return sorted(list(self.degree_tones.keys()))
 
     @property
