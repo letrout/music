@@ -93,3 +93,27 @@ def test_add_tone_above_bad_degree():
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
     }
+
+def test_add_tone_below_degree():
+    test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
+    retval = test.add_tone_above_degree(degree=4, cents=-200)
+    assert retval == 4
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
+    }
+
+def test_add_tone_below_degree_jump():
+    test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
+    retval = test.add_tone_above_degree(degree=5, cents=-400)
+    assert retval == 4
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
+    }
+
+def test_add_tone_below_degree_too_far():
+    test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
+    retval = test.add_tone_above_degree(degree=4, cents=-800)
+    assert retval is None
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
+    }
