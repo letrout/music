@@ -41,12 +41,14 @@ def test_scale_single_tones():
     test = scale.Scale()
     for i in range(1,12):
         test.add_tone(i * 100)
+    assert test.degrees == list(range(1, 13))
     assert test.tones[8] == 800
     assert test.tones[0] == 0
     assert len(test.tones) == 12
 
 def test_scale_tones_array():
-    test = scale.Scale(tones=list(range(100,1200, 100)))
+    test = scale.Scale(tones=list(range(100, 1200, 100)))
+    assert test.degrees == list(range(1, 13))
     assert test.tones[8] == 800
     assert test.tones[0] == 0
     assert len(test.tones) == 12
