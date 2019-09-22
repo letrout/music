@@ -105,6 +105,14 @@ class Scale(object):
         return new_degree
 
     def add_tone_above_degree(self, degree, cents):
+        """
+        Add a tone above an existing degree,
+        by the number of cents above the existing degree
+        :param degree: existing degree of the scale
+        :param cents: number of cents above the existing degree for new tone
+        (can be negative to insert a tone below an existing degree)
+        :return: the degree of the inserted tone, -1 if error
+        """
         new_degree = None
         if degree not in self.degrees:
             return -1
