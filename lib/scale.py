@@ -23,45 +23,60 @@ class Scale(object):
         :param root_note: Note object, root note for the scale (default None)
         :param tones: List of tones, each tone the number of cents above root
         """
-        self.__tones = [0]
+        # First degree is always the root
+        self.__degrees = {1: 0}
         self.__root_note = None
 
         self.root_note = root_note
-        if isinstance(tones, (list,)):
+        if tones is not None and isinstance(tones, (list,)):
             try:
                 for tone in sorted(tones):
                     self.add_tone(tone)
             except TypeError:
                 pass
 
+
+    @property
+    def degrees(self):
+        return self.__degrees
+
     @property
     def tones(self):
         """
-        getter for self.__tones
-        :return: self.__tones
+        Get the tones of the scale, in cents above root
+        :return: A sorted list of tones in the scale
         """
-        return self.__tones
+        return sorted(list(self.degrees.values()))
 
     def add_tone(self, cents):
         """
         Add a tone to the scale
         :param cents: difference from scale root, in cents
-        :return: new position of the tone in the scale
+        :return: new degree of the tone in the scale
                  None if invalid cents value
                  -1 if tone already exists in the scale
-        Raises ValueError if cents out of range
         """
+        my_tones = self.tones
         try:
             float(cents)
         except ValueError:
             return None
         if cents < MIN_CENTS:
             return None
-        if cents in self.tones:
+        if cents in my_tones:
             return -1
-        new_position = bisect.bisect(self.tones, cents)
-        bisect.insort(self.__tones, cents)
-        return new_position
+        #new_position = bisect.bisect(self.tones, cents)
+        #bisect.insort(self.__tones, cents)
+        my_tones.append(cents)
+        # Rebuild self.__degrees dictionary
+        i = 1
+        self.__degrees = dict()
+        for tone in sorted(my_tones):
+            self.__degrees[i] = tone
+            if tone == cents:
+                new_degree = i
+            i += 1
+        return new_degree
 
     @property
     def root_note(self):

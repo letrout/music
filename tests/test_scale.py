@@ -22,12 +22,17 @@ def test_scale_badroot_hz():
     with pytest.raises(ValueError):
         test = scale.Scale(root_note=-1)
 
+def test_scale_badroot_type():
+    test = scale.Scale(root_note='xyz')
+    assert test.root_note is None
+
 def test_scale_freq_change():
     test = scale.Scale(root_note=440)
     assert test.freq_ratio(660) == 1.5
 
 def test_scale_tone_0():
     test = scale.Scale()
+    assert list(test.degrees.keys()) == [1]
     assert test.tones == [0]
     test.add_tone(0)
     assert test.tones == [0]
