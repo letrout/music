@@ -63,3 +63,9 @@ def test_scale_bad_tones_list():
     test = scale.Scale(tones=['bad', 2])
     assert test.degrees == [1]
     assert test.tones == [0]
+
+def test_scale_degree_cents():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
+    }

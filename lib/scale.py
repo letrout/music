@@ -59,6 +59,20 @@ class Scale(object):
         """
         return sorted(list(self.degree_tones.values()))
 
+    @property
+    def degree_steps_cents(self):
+        """
+        Get the steps of every degree (to the previous), in cents
+        :return: dict of degree->cents to previous degree
+        """
+        steps = dict()
+        for degree, cents in self.degree_tones.items():
+            if degree == 1:
+                steps[1] = 0
+            else:
+                steps[degree] = cents - self.degree_tones[degree - 1]
+        return steps
+
     def add_tone(self, cents):
         """
         Add a tone to the scale
