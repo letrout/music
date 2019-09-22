@@ -35,6 +35,7 @@ def test_scale_tone_0():
     assert test.degrees == [1]
     assert test.tones == [0]
     test.add_tone(0)
+    assert test.degrees == [1]
     assert test.tones == [0]
 
 def test_scale_single_tones():
@@ -55,8 +56,10 @@ def test_scale_tones_array():
 
 def test_scale_bad_tone():
     test = scale.Scale(tones='bad')
+    assert test.degrees == [1]
     assert test.tones == [0]
 
 def test_scale_bad_tones_list():
     test = scale.Scale(tones=['bad', 2])
+    assert test.degrees == [1]
     assert test.tones == [0]
