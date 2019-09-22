@@ -32,7 +32,7 @@ def test_scale_freq_change():
 
 def test_scale_tone_0():
     test = scale.Scale()
-    assert list(test.degrees.keys()) == [1]
+    assert test.degrees == [1]
     assert test.tones == [0]
     test.add_tone(0)
     assert test.tones == [0]

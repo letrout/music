@@ -24,7 +24,7 @@ class Scale(object):
         :param tones: List of tones, each tone the number of cents above root
         """
         # First degree is always the root
-        self.__degrees = {1: 0}
+        self.__degree_tones = {1: 0}
         self.__root_note = None
 
         self.root_note = root_note
@@ -35,10 +35,13 @@ class Scale(object):
             except TypeError:
                 pass
 
+    @property
+    def degree_tones(self):
+        return self.__degree_tones
 
     @property
     def degrees(self):
-        return self.__degrees
+        return sorted(list(self.degree_tones.keys()))
 
     @property
     def tones(self):
@@ -46,7 +49,7 @@ class Scale(object):
         Get the tones of the scale, in cents above root
         :return: A sorted list of tones in the scale
         """
-        return sorted(list(self.degrees.values()))
+        return sorted(list(self.degree_tones.values()))
 
     def add_tone(self, cents):
         """
@@ -70,9 +73,9 @@ class Scale(object):
         my_tones.append(cents)
         # Rebuild self.__degrees dictionary
         i = 1
-        self.__degrees = dict()
+        self.__degree_tones = dict()
         for tone in sorted(my_tones):
-            self.__degrees[i] = tone
+            self.__degree_tones[i] = tone
             if tone == cents:
                 new_degree = i
             i += 1
