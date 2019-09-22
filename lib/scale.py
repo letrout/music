@@ -129,7 +129,9 @@ class Scale(object):
         :return: 0 on success, -1 on error
         """
         # FIXME: stub
-        if degree not in self.degrees:
+        try:
+            del self.__degree_tones[degree]
+        except KeyError:
             return -1
         return
 
@@ -139,10 +141,16 @@ class Scale(object):
         :param degree:
         :return: 0 on success, -1 on error
         """
-        # FIXME: stub
-        if degree not in self.degrees:
+        try:
+            del self.__degree_tones[degree]
+        except KeyError:
             return -1
-        return
+        new_tones = self.tones
+        # Rebuild degree_tones
+        self.__degree_tones = dict()
+        for tone in new_tones:
+            self.add_tone(tone)
+        return 0
 
     @property
     def root_note(self):
