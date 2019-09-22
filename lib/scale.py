@@ -82,6 +82,7 @@ class Scale(object):
                  -1 if tone already exists in the scale
         """
         my_tones = self.tones
+        new_degree = None
         try:
             float(cents)
         except ValueError:
@@ -101,6 +102,13 @@ class Scale(object):
             if tone == cents:
                 new_degree = i
             i += 1
+        return new_degree
+
+    def add_tone_above_degree(self, degree, cents):
+        new_degree = None
+        if degree not in self.degrees:
+            return -1
+        new_degree = self.add_tone(self.degree_tones[degree] + cents)
         return new_degree
 
     @property

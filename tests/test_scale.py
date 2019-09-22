@@ -69,3 +69,27 @@ def test_scale_degree_cents():
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
     }
+
+def test_add_tone_above_degree():
+    test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
+    retval = test.add_tone_above_degree(degree=3, cents=100)
+    assert retval == 4
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
+    }
+
+def test_add_tone_above_degree_jump():
+    test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
+    retval = test.add_tone_above_degree(degree=2, cents=300)
+    assert retval == 4
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
+    }
+
+def test_add_tone_above_bad_degree():
+    test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
+    retval = test.add_tone_above_degree(degree=9, cents=100)
+    assert retval == -1
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
+    }
