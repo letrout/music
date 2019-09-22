@@ -72,7 +72,7 @@ def test_scale_degree_cents():
 
 def test_add_tone_above_degree():
     test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
-    retval = test.add_tone_above_degree(degree=3, cents=100)
+    retval = test.add_tone_rel_degree(degree=3, cents=100)
     assert retval == 4
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
@@ -80,7 +80,7 @@ def test_add_tone_above_degree():
 
 def test_add_tone_above_degree_jump():
     test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
-    retval = test.add_tone_above_degree(degree=2, cents=300)
+    retval = test.add_tone_rel_degree(degree=2, cents=300)
     assert retval == 4
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
@@ -88,7 +88,7 @@ def test_add_tone_above_degree_jump():
 
 def test_add_tone_above_bad_degree():
     test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
-    retval = test.add_tone_above_degree(degree=9, cents=100)
+    retval = test.add_tone_rel_degree(degree=9, cents=100)
     assert retval == -1
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
@@ -96,7 +96,7 @@ def test_add_tone_above_bad_degree():
 
 def test_add_tone_below_degree():
     test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
-    retval = test.add_tone_above_degree(degree=4, cents=-200)
+    retval = test.add_tone_rel_degree(degree=4, cents=-200)
     assert retval == 4
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
@@ -104,7 +104,7 @@ def test_add_tone_below_degree():
 
 def test_add_tone_below_degree_jump():
     test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
-    retval = test.add_tone_above_degree(degree=5, cents=-400)
+    retval = test.add_tone_rel_degree(degree=5, cents=-400)
     assert retval == 4
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 100, 5: 200, 6: 200, 7: 200, 8: 100
@@ -112,7 +112,7 @@ def test_add_tone_below_degree_jump():
 
 def test_add_tone_below_degree_too_far():
     test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
-    retval = test.add_tone_above_degree(degree=4, cents=-800)
+    retval = test.add_tone_rel_degree(degree=4, cents=-800)
     assert retval is None
     assert test.degree_steps_cents == {
         1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
