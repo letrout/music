@@ -120,7 +120,23 @@ class Scale(object):
         new_degree = self.add_tone(self.degree_tones[degree] + cents)
         return new_degree
 
+    def move_degree(self, degree, cents):
+        """
+        Move (retune) a degree by cents
+        :param degree: the scale degree to retune
+        :param cents: the number of cents by which to change the tone
+        (can be negative)
+        :return:
+        """
+        # FIXME: stub
+        return
+
     def remove_degree(self, degree):
+        """
+        Remove a scale degree
+        :param degree:
+        :return: 0 on success, -1 on error
+        """
         # FIXME: stub
         return
 
