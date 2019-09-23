@@ -26,3 +26,12 @@ def test_scale_insert_tone_overmax():
         1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
         9: 800, 10: 900, 11: 1000, 12: 1100
     }
+
+def test_scale_move_tone_overmax():
+    test = scale_octave.ScaleOctave(tones=list(range(100, 1200, 100)))
+    retval = test.move_degree(degree=11, cents=201)
+    assert retval == -1
+    assert test.degree_tones == {
+        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+        9: 800, 10: 900, 11: 1000, 12: 1100
+    }

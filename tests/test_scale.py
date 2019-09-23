@@ -133,3 +133,59 @@ def test_scale_remove_degree_nonexist():
     assert retval == -1
     assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
     assert test.tones == [0, 200, 400, 500, 700, 900, 1100, 1200]
+
+def test_move_degree_up():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    retval = test.move_degree(degree=2, cents=50)
+    assert retval == 0
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    assert test.tones == [0, 250, 400, 500, 700, 900, 1100, 1200]
+
+def test_move_degree_up_jump():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    retval = test.move_degree(degree=2, cents=250)
+    assert retval == 0
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    assert test.tones == [0, 400, 450, 500, 700, 900, 1100, 1200]
+
+def test_move_degree_down():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    retval = test.move_degree(degree=2, cents=-50)
+    assert retval == 0
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    assert test.tones == [0, 150, 400, 500, 700, 900, 1100, 1200]
+
+def test_move_degree_down_jump():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    retval = test.move_degree(degree=3, cents=-250)
+    assert retval == 0
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    assert test.tones == [0, 150, 200, 500, 700, 900, 1100, 1200]
+
+def test_move_degree_down_too_far():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    retval = test.move_degree(degree=2, cents=-500)
+    assert retval == -1
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    assert test.tones == [0, 200, 400, 500, 700, 900, 1100, 1200]
+
+def test_move_degree_nonexist():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    retval = test.move_degree(degree=9, cents=50)
+    assert retval == -1
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    assert test.tones == [0, 200, 400, 500, 700, 900, 1100, 1200]
+
+def test_move_degree_root():
+    test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    retval = test.move_degree(degree=1, cents=50)
+    assert retval == -1
+    assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
+    assert test.tones == [0, 200, 400, 500, 700, 900, 1100, 1200]

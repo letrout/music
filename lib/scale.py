@@ -128,12 +128,23 @@ class Scale(object):
         (can be negative)
         :return: 0 on success, -1 on error
         """
-        # FIXME: stub
+        if degree == 1:
+            # can't remove the root
+            return -1
+        cur_deg_tones = self.degree_tones.copy()
         try:
             del self.__degree_tones[degree]
         except KeyError:
             return -1
-        return
+        new_cents = cur_deg_tones[degree] + cents
+        new_degree = self.add_tone(new_cents)
+        if new_degree is None or new_degree == -1:
+            # Re-tuned tone doesn't fit our scale constraints?
+            # reset degree_tones and return error
+            # FIXME: -1 means tone re-tuned to an existing tone, maybe that's ok?
+            self.__degree_tones = cur_deg_tones
+            return -1
+        return 0
 
     def remove_degree(self, degree):
         """
