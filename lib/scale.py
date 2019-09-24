@@ -1,9 +1,14 @@
 """
 scale.py
 A class to hold a collection of tones defined as a scale
-(ie all tones within an octave range)
-The scale is defined by relative distances between
-each of the tones and the root
+(ie all tones within an octave range).
+
+The scale is defined by relative distances between each of the tones and the
+root.
+The base structure of the scale is provided by degree_tones. This is a
+dictionary of degree: tone, where 'degree' is the degree of the scale
+(with the root being 1) and 'tone' is the number of cents above the root for
+the degree.
 """
 
 import bisect
