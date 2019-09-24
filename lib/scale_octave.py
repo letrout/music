@@ -7,7 +7,8 @@ Extends ./scale.py
 
 import scale
 
-OCTAVE_CENTS = 1200
+MAX_CENTS = 1200
+OCTAVE_CENTS = MAX_CENTS
 
 
 class ScaleOctave(scale.Scale):
@@ -31,6 +32,6 @@ class ScaleOctave(scale.Scale):
                  -1 if tone already exists in the scale
         Raises ValueError if cents out of range
         """
-        if cents > OCTAVE_CENTS:
+        if cents > MAX_CENTS:
             return None
         return super().add_tone(cents)
