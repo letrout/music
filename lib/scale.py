@@ -1,9 +1,14 @@
 """
 scale.py
 A class to hold a collection of tones defined as a scale
-(ie all tones within an octave range)
-By default, the scale is defined by relative distances between the tones
-(in cents), unless a root note is defined.
+(ie all tones within an octave range).
+
+The scale is defined by relative distances between each of the tones and the
+root.
+The base structure of the scale is provided by degree_tones. This is a
+dictionary of degree: tone, where 'degree' is the degree of the scale
+(with the root being 1) and 'tone' is the number of cents above the root for
+the degree.
 """
 
 import bisect
@@ -23,11 +28,12 @@ class Scale(object):
         :param root_note: Note object, root note for the scale (default None)
         :param tones: List of tones, each tone the number of cents above root
         """
-        self.__tones = [0]
+        # First degree is always the root
+        self.__degree_tones = {1: 0}
         self.__root_note = None
 
         self.root_note = root_note
-        if isinstance(tones, (list,)):
+        if tones is not None and isinstance(tones, (list,)):
             try:
                 for tone in sorted(tones):
                     self.add_tone(tone)
@@ -35,33 +41,132 @@ class Scale(object):
                 pass
 
     @property
+    def degree_tones(self):
+        """
+        getter for __degree_tones
+        :return: dict of degree->tone, where tone is cents above root
+        """
+        return self.__degree_tones
+
+    @property
+    def degrees(self):
+        """
+        The degrees of the scale
+        :return: A sorted list of the scale degrees
+        """
+        return sorted(list(self.degree_tones.keys()))
+
+    @property
     def tones(self):
         """
-        getter for self.__tones
-        :return: self.__tones
+        Get the tones of the scale, in cents above root
+        :return: A sorted list of tones in the scale
         """
-        return self.__tones
+        return sorted(list(self.degree_tones.values()))
+
+    @property
+    def degree_steps_cents(self):
+        """
+        Get the steps of every degree (to the previous), in cents
+        :return: dict of degree->cents to previous degree
+        """
+        steps = dict()
+        for degree, cents in self.degree_tones.items():
+            if degree == 1:
+                steps[1] = 0
+            else:
+                steps[degree] = cents - self.degree_tones[degree - 1]
+        return steps
 
     def add_tone(self, cents):
         """
         Add a tone to the scale
         :param cents: difference from scale root, in cents
-        :return: new position of the tone in the scale
+        :return: new degree of the tone in the scale
                  None if invalid cents value
                  -1 if tone already exists in the scale
-        Raises ValueError if cents out of range
         """
+        my_tones = self.tones
+        new_degree = None
         try:
             float(cents)
         except ValueError:
             return None
         if cents < MIN_CENTS:
             return None
-        if cents in self.tones:
+        if cents in my_tones:
             return -1
-        new_position = bisect.bisect(self.tones, cents)
-        bisect.insort(self.__tones, cents)
-        return new_position
+        #new_position = bisect.bisect(self.tones, cents)
+        #bisect.insort(self.__tones, cents)
+        my_tones.append(cents)
+        # Rebuild self.__degrees dictionary
+        i = 1
+        self.__degree_tones = dict()
+        for tone in sorted(my_tones):
+            self.__degree_tones[i] = tone
+            if tone == cents:
+                new_degree = i
+            i += 1
+        return new_degree
+
+    def add_tone_rel_degree(self, degree, cents):
+        """
+        Add a tone relative to an existing degree,
+        by the number of cents above the existing degree
+        (cents can be negative to insert below the degree)
+        :param degree: existing degree of the scale
+        :param cents: number of cents above the existing degree for new tone
+        (can be negative to insert a tone below an existing degree)
+        :return: the degree of the inserted tone, -1 if error
+        """
+        new_degree = None
+        if degree not in self.degrees:
+            return -1
+        new_degree = self.add_tone(self.degree_tones[degree] + cents)
+        return new_degree
+
+    def move_degree(self, degree, cents):
+        """
+        Move (retune) a degree by cents
+        :param degree: the scale degree to retune
+        :param cents: the number of cents by which to change the tone
+        (can be negative)
+        :return: 0 on success, -1 on error
+        """
+        if degree == 1:
+            # can't remove the root
+            return -1
+        cur_deg_tones = self.degree_tones.copy()
+        try:
+            del self.__degree_tones[degree]
+        except KeyError:
+            return -1
+        new_cents = cur_deg_tones[degree] + cents
+        new_degree = self.add_tone(new_cents)
+        if new_degree is None or new_degree == -1:
+            # Re-tuned tone doesn't fit our scale constraints?
+            # reset degree_tones and return error
+            # FIXME: -1 means tone re-tuned to an existing tone, maybe that's ok?
+            self.__degree_tones = cur_deg_tones
+            return -1
+        return 0
+
+    def remove_degree(self, degree):
+        """
+        Remove a scale degree
+        :param degree:
+        :return: 0 on success, -1 on error
+        """
+        try:
+            del self.__degree_tones[degree]
+        except KeyError:
+            return -1
+        new_tones = self.tones
+        # Rebuild degree_tones
+        self.__degree_tones = dict()
+        for tone in new_tones:
+            self.add_tone(tone)
+        return 0
 
     @property
     def root_note(self):
