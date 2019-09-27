@@ -5,10 +5,10 @@ A class to hold a collection of tones defined as a scale
 
 The scale is defined by relative distances between each of the tones and the
 root.
-The base structure of the scale is provided by degree_tones. This is a
-dictionary of degree: tone, where 'degree' is the degree of the scale
-(with the root being 1) and 'tone' is the number of cents above the root for
-the degree.
+The base structure of the scale is provided by scale_df. This is a
+DataFrame with columns degree and tone, where 'degree' is the degree of the
+scale (with the root being 1) and 'tone' is the number of cents above the root
+for the degree.
 """
 
 __author__ = "Joel Luth"
@@ -18,6 +18,8 @@ __license__ = "MIT"
 __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
+
+import pandas as pd
 
 import lib.note as note
 
@@ -35,7 +37,7 @@ class Scale(object):
         :param tones: List of tones, each tone the number of cents above root
         """
         # First degree is always the root
-        self.__degree_tones = {1: 0}
+        self.__scale_df = pd.DataFrame.from_dict({'degree': [1], 'tone': [0]})
         self.__root_note = None
 
         self.root_note = root_note
@@ -46,13 +48,36 @@ class Scale(object):
             except TypeError:
                 pass
 
+
+    @property
+    def scale_df(self):
+        """
+        getter for scale_df
+        :return: scale_df dataframe
+        """
+        # TODO: run rebuild_scale_df() every access?
+        return self.__scale_df
+
+    def rebuild_scale_df(self):
+        """
+        Rebuild the scale dataframe
+        Sort by tones, reset index, and recalculate degrees
+        :return: nothing
+        """
+        # TODO: run these ops on a copy of scale_df?
+        # TODO: make this a private method?
+        self.__scale_df.sort_values(by=['tone'], inplace=True)
+        self.__scale_df.reset_index(inplace=True, drop=True)
+        self.__scale_df.loc[:, 'degree'] = self.__scale_df.index + 1
+        return
+
     @property
     def degree_tones(self):
         """
-        getter for __degree_tones
+        dict of degree->tone
         :return: dict of degree->tone, where tone is cents above root
         """
-        return self.__degree_tones
+        return self.scale_df.set_index('degree').to_dict()['tone']
 
     @property
     def degrees(self):
@@ -60,7 +85,7 @@ class Scale(object):
         The degrees of the scale
         :return: A sorted list of the scale degrees
         """
-        return sorted(list(self.degree_tones.keys()))
+        return self.scale_df['degree'].to_list()
 
     @property
     def tones(self):
@@ -68,12 +93,43 @@ class Scale(object):
         Get the tones of the scale, in cents above root
         :return: A sorted list of tones in the scale
         """
-        return sorted(list(self.degree_tones.values()))
+        return self.scale_df['tone'].to_list()
+
+    def degree_from_tone(self, cents):
+        """
+        Get the scale degree for a given tone
+        :param cents: the tone in cents above the root
+        :return: the scale degree matching the tone,
+        None if tone not found in scale
+        """
+        degree = None
+        try:
+            degree = self.scale_df.loc[
+                self.scale_df['tone'] == cents, 'degree'].iloc[0]
+        except KeyError:
+            pass
+        return degree
+
+    def tone_from_degree(self, degree):
+        """
+        Get the tone (cents above root) for a scale degree
+        :param degree: the degree of the scale matching the tone
+        :return: the tone (in cents above root) for the supplied scale degree
+        None if the degree not found in the scale
+        """
+        tone = None
+        try:
+            tone = self.scale_df.loc[
+                self.scale_df['degree'] == degree, 'tone'].iloc[0]
+        except KeyError:
+            pass
+        return tone
 
     @property
     def degree_steps_cents(self):
         """
         Get the steps of every degree (to the previous), in cents
+        # TODO: make this directly from scale_df?
         :return: dict of degree->cents to previous degree
         """
         steps = dict()
@@ -102,18 +158,11 @@ class Scale(object):
             return None
         if cents in my_tones:
             return -1
-#        new_position = bisect.bisect(self.tones, cents)
-#        bisect.insort(self.__tones, cents)
-        my_tones.append(cents)
-        # Rebuild self.__degrees dictionary
-        i = 1
-        self.__degree_tones = dict()
-        for tone in sorted(my_tones):
-            self.__degree_tones[i] = tone
-            if tone == cents:
-                new_degree = i
-            i += 1
-        return new_degree
+        # TODO: can we do this to scale_df inplace?
+        new_df = self.scale_df.append({'tone': cents}, ignore_index=True)
+        self.__scale_df = new_df
+        self.rebuild_scale_df()
+        return self.degree_from_tone(cents)
 
     def add_tone_rel_degree(self, degree, cents):
         """
@@ -128,7 +177,7 @@ class Scale(object):
         new_degree = None
         if degree not in self.degrees:
             return -1
-        new_degree = self.add_tone(self.degree_tones[degree] + cents)
+        new_degree = self.add_tone(self.tone_from_degree(degree) + cents)
         return new_degree
 
     def move_degree(self, degree, cents):
@@ -139,21 +188,21 @@ class Scale(object):
         (can be negative)
         :return: 0 on success, -1 on error
         """
-        if degree == 1:
-            # can't remove the root
+        if degree == 1 or degree not in self.degrees:
+            # can't move the root or nonexisting degree
             return -1
-        cur_deg_tones = self.degree_tones.copy()
-        try:
-            del self.__degree_tones[degree]
-        except KeyError:
+        old_cents = self.tone_from_degree(degree)
+        retval = self.remove_degree(degree)
+        if retval != 0:
+            # Something went wrong removing the old degree
             return -1
-        new_cents = cur_deg_tones[degree] + cents
-        new_degree = self.add_tone(new_cents)
+        new_degree = self.add_tone(old_cents + cents)
         if new_degree is None or new_degree == -1:
             # Re-tuned tone doesn't fit our scale constraints?
             # reset degree_tones and return error
             # FIXME: -1 means tone re-tuned to an existing tone, maybe that's ok?
-            self.__degree_tones = cur_deg_tones
+            # restore the removed degree
+            self.add_tone(old_cents)
             return -1
         return 0
 
@@ -163,15 +212,11 @@ class Scale(object):
         :param degree:
         :return: 0 on success, -1 on error
         """
-        try:
-            del self.__degree_tones[degree]
-        except KeyError:
+        if degree == 1 or degree not in self.degrees:
+            # Can't remove root or nonexisting degree
             return -1
-        new_tones = self.tones
-        # Rebuild degree_tones
-        self.__degree_tones = dict()
-        for tone in new_tones:
-            self.add_tone(tone)
+        self.__scale_df = self.scale_df[self.scale_df['degree'] != degree]
+        self.rebuild_scale_df()
         return 0
 
     @property
