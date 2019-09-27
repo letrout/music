@@ -98,7 +98,7 @@ class Scale(object):
         try:
             degree = self.scale_df.loc[
                 self.scale_df['tone'] == cents, 'degree'].iloc[0]
-        except KeyError:
+        except IndexError:
             pass
         return degree
 
@@ -113,7 +113,7 @@ class Scale(object):
         try:
             tone = self.scale_df.loc[
                 self.scale_df['degree'] == degree, 'tone'].iloc[0]
-        except KeyError:
+        except IndexError:
             pass
         return tone
 
