@@ -29,7 +29,7 @@ class Scale(object):
         :param tones: List of tones, each tone the number of cents above root
         """
         # First degree is always the root
-        self.__degree_tones = {1: 0}
+        self.__tones = [0]
         self.__root_note = None
 
         self.root_note = root_note
@@ -43,10 +43,15 @@ class Scale(object):
     @property
     def degree_tones(self):
         """
-        getter for __degree_tones
+        dictionary of degrees->tones
         :return: dict of degree->tone, where tone is cents above root
         """
-        return self.__degree_tones
+        i = 1
+        degree_tones = {}
+        for tone in self.tones:
+            degree_tones[i] = tone
+            i += 1
+        return degree_tones
 
     @property
     def degrees(self):
@@ -59,10 +64,11 @@ class Scale(object):
     @property
     def tones(self):
         """
+        getter for __tones
         Get the tones of the scale, in cents above root
         :return: A sorted list of tones in the scale
         """
-        return sorted(list(self.degree_tones.values()))
+        return sorted(self.__tones)
 
     @property
     def degree_steps_cents(self):
@@ -86,28 +92,16 @@ class Scale(object):
                  None if invalid cents value
                  -1 if tone already exists in the scale
         """
-        my_tones = self.tones
-        new_degree = None
         try:
             float(cents)
         except ValueError:
             return None
         if cents < MIN_CENTS:
             return None
-        if cents in my_tones:
+        if cents in self.tones:
             return -1
-        #new_position = bisect.bisect(self.tones, cents)
-        #bisect.insort(self.__tones, cents)
-        my_tones.append(cents)
-        # Rebuild self.__degrees dictionary
-        i = 1
-        self.__degree_tones = dict()
-        for tone in sorted(my_tones):
-            self.__degree_tones[i] = tone
-            if tone == cents:
-                new_degree = i
-            i += 1
-        return new_degree
+        self.__tones.append(cents)
+        return self.tones.index(cents) + 1
 
     def add_tone_rel_degree(self, degree, cents):
         """
@@ -120,10 +114,11 @@ class Scale(object):
         :return: the degree of the inserted tone, -1 if error
         """
         new_degree = None
-        if degree not in self.degrees:
+        try:
+            new_cents = self.degree_tones[degree] + cents
+        except KeyError:
             return -1
-        new_degree = self.add_tone(self.degree_tones[degree] + cents)
-        return new_degree
+        return self.add_tone(new_cents)
 
     def move_degree(self, degree, cents):
         """
@@ -136,19 +131,18 @@ class Scale(object):
         if degree == 1:
             # can't remove the root
             return -1
-        cur_deg_tones = self.degree_tones.copy()
         try:
-            del self.__degree_tones[degree]
+            cur_cents = self.degree_tones[degree]
         except KeyError:
             return -1
-        new_cents = cur_deg_tones[degree] + cents
+        new_cents = cur_cents + cents
         new_degree = self.add_tone(new_cents)
         if new_degree is None or new_degree == -1:
             # Re-tuned tone doesn't fit our scale constraints?
             # reset degree_tones and return error
-            # FIXME: -1 means tone re-tuned to an existing tone, maybe that's ok?
-            self.__degree_tones = cur_deg_tones
             return -1
+        # Remove the old degree
+        self.__tones.remove(cur_cents)
         return 0
 
     def remove_degree(self, degree):
@@ -158,14 +152,11 @@ class Scale(object):
         :return: 0 on success, -1 on error
         """
         try:
-            del self.__degree_tones[degree]
+            cur_cents = self.degree_tones[degree]
         except KeyError:
             return -1
         new_tones = self.tones
-        # Rebuild degree_tones
-        self.__degree_tones = dict()
-        for tone in new_tones:
-            self.add_tone(tone)
+        self.__tones.remove(cur_cents)
         return 0
 
     @property
