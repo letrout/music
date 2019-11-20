@@ -1,0 +1,7 @@
+Run pytest from the parent (music/) directory, e.g.
+
+  python -m pytest tests/
+
+or
+
+  python -m pytest --cov=lib tests/
