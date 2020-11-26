@@ -118,6 +118,14 @@ def test_add_tone_below_degree_too_far():
         1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
     }
 
+def test_add_tone_non_numeric():
+    test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
+    retval = test.add_tone(cents='Csharp')
+    assert retval is None
+    assert test.degree_steps_cents == {
+        1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
+    }
+
 def test_scale_remove_degree():
     test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
     assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
