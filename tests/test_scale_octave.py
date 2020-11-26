@@ -1,7 +1,7 @@
 import pytest
 import sys
 
-sys.path.insert(0, '../lib')
+sys.path.insert(0, './lib')
 import scale_octave
 
 def test_scale_tone1200():

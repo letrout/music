@@ -1,7 +1,7 @@
 import pytest
 import sys
 
-sys.path.insert(0, '../lib')
+sys.path.insert(0, './lib')
 import note
 
 def test_note_freq_too_low():
