@@ -5,3 +5,4 @@ Run pytest from the parent (music/) directory, e.g.
 or
 
   python -m pytest --cov=lib tests/
+  python -m pytest --cov-report term-missing --cov=lib tests/
