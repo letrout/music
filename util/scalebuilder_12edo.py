@@ -6,10 +6,7 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
-import sys
-
-sys.path.insert(0, '../lib')
-import scale_12edo
+import lib.scale_12edo as scale_12edo
 
 MAJOR = [scale_12edo.WHOLE,
          scale_12edo.WHOLE,
