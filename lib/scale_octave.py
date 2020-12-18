@@ -5,7 +5,7 @@ A class to hold a collection of tones defined as a scale
 Extends ./scale.py
 """
 
-import scale
+import lib.scale as scale
 
 MAX_CENTS = 1200
 OCTAVE_CENTS = MAX_CENTS

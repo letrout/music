@@ -5,6 +5,7 @@ A class to hold information about a musical note
 
 MAX_FREQ_HZ = 100 * 1000
 
+
 class Note(object):
     """
     CLass to define a musical note

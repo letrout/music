@@ -11,7 +11,7 @@ dictionary of degree: tone, where 'degree' is the degree of the scale
 the degree.
 """
 
-import note
+import lib.note as note
 
 MIN_CENTS = 0
 
@@ -94,8 +94,8 @@ class Scale(object):
             return None
         if cents in my_tones:
             return -1
-        #new_position = bisect.bisect(self.tones, cents)
-        #bisect.insort(self.__tones, cents)
+#        new_position = bisect.bisect(self.tones, cents)
+#        bisect.insort(self.__tones, cents)
         my_tones.append(cents)
         # Rebuild self.__degrees dictionary
         i = 1
