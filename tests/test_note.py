@@ -10,7 +10,6 @@ import pytest
 
 import lib.note as note
 
-
 def test_note_freq_too_low():
     with pytest.raises(ValueError):
         test = note.Note(-1)
