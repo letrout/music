@@ -48,7 +48,6 @@ class Scale(object):
             except TypeError:
                 pass
 
-
     @property
     def scale_df(self):
         """
@@ -149,7 +148,7 @@ class Scale(object):
                  -1 if tone already exists in the scale
         """
         my_tones = self.tones
-        new_degree = None
+#        new_degree = None
         try:
             float(cents)
         except ValueError:

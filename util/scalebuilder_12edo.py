@@ -27,9 +27,11 @@ MODE = {
 
 # 12 EDO scales
 
+
 def chromatic():
     myscale = scale_12edo.Scale12EDO(list(range(100, 1200, 100)))
     return myscale
+
 
 def mode(mode):
     if mode not in MODE:
@@ -40,8 +42,10 @@ def mode(mode):
         myscale.add_tone(step)
     return myscale
 
+
 def major():
     return mode('ionian')
+
 
 def natminor():
     return mode('aeolian')
