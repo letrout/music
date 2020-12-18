@@ -11,8 +11,6 @@ dictionary of degree: tone, where 'degree' is the degree of the scale
 the degree.
 """
 
-import bisect
-
 import note
 
 MIN_CENTS = 0
