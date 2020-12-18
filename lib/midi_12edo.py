@@ -3,7 +3,7 @@ MIDI utilities for 12-EDO tuning
 From https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
 """
 
-from math import log2
+from numpy import log2
 import pandas as pd
 
 CONCERT_A_HZ = 440

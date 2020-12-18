@@ -2,7 +2,7 @@
 Mathematical ratios for musical calculations
 """
 
-from math import log2
+from numpy import log2
 
 OCTAVE_CENTS = 1200
 
