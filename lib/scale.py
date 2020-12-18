@@ -119,7 +119,7 @@ class Scale(object):
         (can be negative to insert a tone below an existing degree)
         :return: the degree of the inserted tone, -1 if error
         """
-        new_degree = None
+#        new_degree = None
         try:
             new_cents = self.degree_tones[degree] + cents
         except KeyError:
@@ -161,7 +161,7 @@ class Scale(object):
             cur_cents = self.degree_tones[degree]
         except KeyError:
             return -1
-        new_tones = self.tones
+#        new_tones = self.tones
         self.__tones.remove(cur_cents)
         return 0
 
