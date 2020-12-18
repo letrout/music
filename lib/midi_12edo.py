@@ -3,10 +3,11 @@ MIDI utilities for 12-EDO tuning
 From https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
 """
 
-from math import log2
+from numpy import log2
 import pandas as pd
 
 CONCERT_A_HZ = 440
+
 
 def notes_df():
     """
@@ -15,7 +16,7 @@ def notes_df():
     """
     notes_sharps = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
     accidentals = [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]
-    notes_flats =['C', 'D', 'D', 'E', 'E', 'F', 'G', 'G', 'A', 'A', 'B', 'B']
+    notes_flats = ['C', 'D', 'D', 'E', 'E', 'F', 'G', 'G', 'A', 'A', 'B', 'B']
     return pd.DataFrame({
         'halfstep': range(0, 12),
         'note_sharp': notes_sharps,
