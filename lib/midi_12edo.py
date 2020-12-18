@@ -3,10 +3,19 @@ MIDI utilities for 12-EDO tuning
 From https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
 """
 
-from math import log2
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
+from numpy import log2
 import pandas as pd
 
 CONCERT_A_HZ = 440
+
 
 def notes_df():
     """
@@ -15,13 +24,14 @@ def notes_df():
     """
     notes_sharps = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
     accidentals = [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]
-    notes_flats =['C', 'D', 'D', 'E', 'E', 'F', 'G', 'G', 'A', 'A', 'B', 'B']
+    notes_flats = ['C', 'D', 'D', 'E', 'E', 'F', 'G', 'G', 'A', 'A', 'B', 'B']
     return pd.DataFrame({
         'halfstep': range(0, 12),
         'note_sharp': notes_sharps,
         'note_flat': notes_flats,
         'accidental': accidentals
     })
+
 
 def octave_from_midi(midi_note):
     """
@@ -36,6 +46,7 @@ def octave_from_midi(midi_note):
         octave = -1
     return octave
 
+
 def freq_from_midi(midi_note):
     """
     Frequency of MIDI note
@@ -44,13 +55,15 @@ def freq_from_midi(midi_note):
     """
     return CONCERT_A_HZ * 2 ** ((midi_note - 69) / 12)
 
+
 def midi_from_freq(freq_hz):
     """
     MIDI note number for a given frequency
     :param freq_hz: frequency in Hz
     :return: MIDI note number (float, may need rounding by caller)
     """
-    return 12 * log2(freq_hz/CONCERT_A_HZ) + 69
+    return 12 * log2(freq_hz / CONCERT_A_HZ) + 69
+
 
 def piano_key_from_midi(midi_note):
     """

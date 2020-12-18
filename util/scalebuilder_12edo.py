@@ -1,3 +1,11 @@
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
 import sys
 
 sys.path.insert(0, '../lib')
@@ -22,9 +30,11 @@ MODE = {
 
 # 12 EDO scales
 
+
 def chromatic():
     myscale = scale_12edo.Scale12EDO(list(range(100, 1200, 100)))
     return myscale
+
 
 def mode(mode):
     if mode not in MODE:
@@ -35,8 +45,10 @@ def mode(mode):
         myscale.add_tone(step)
     return myscale
 
+
 def major():
     return mode('ionian')
+
 
 def natminor():
     return mode('aeolian')

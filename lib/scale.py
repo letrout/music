@@ -11,9 +11,15 @@ dictionary of degree: tone, where 'degree' is the degree of the scale
 the degree.
 """
 
-import bisect
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
 
-import note
+import lib.note as note
 
 MIN_CENTS = 0
 
@@ -96,8 +102,8 @@ class Scale(object):
             return None
         if cents in my_tones:
             return -1
-        #new_position = bisect.bisect(self.tones, cents)
-        #bisect.insort(self.__tones, cents)
+#        new_position = bisect.bisect(self.tones, cents)
+#        bisect.insort(self.__tones, cents)
         my_tones.append(cents)
         # Rebuild self.__degrees dictionary
         i = 1

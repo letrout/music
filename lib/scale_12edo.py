@@ -5,7 +5,15 @@ A class to hold a collection of tones defined as a scale
 Extends ./scale.py
 """
 
-import scale_octave
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
+import lib.scale_octave as scale_octave
 
 SEMITONE_CENTS = 100
 HALF = SEMITONE_CENTS
