@@ -3,6 +3,14 @@ note.py
 A class to hold information about a musical note
 """
 
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
 MAX_FREQ_HZ = 100 * 1000
 
 class Note(object):
