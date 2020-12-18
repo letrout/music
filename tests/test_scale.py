@@ -7,11 +7,9 @@ __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
 import pytest
-import sys
 
-sys.path.insert(0, '../lib')
-import note
-import scale
+import lib.note as note
+import lib.scale as scale
 
 def test_scale_noroot():
     test = scale.Scale()

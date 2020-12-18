@@ -13,7 +13,7 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
-import scale_octave
+import lib.scale_octave as scale_octave
 
 SEMITONE_CENTS = 100
 HALF = SEMITONE_CENTS

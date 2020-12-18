@@ -6,11 +6,7 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
-import pytest
-import sys
-
-sys.path.insert(0, '../lib')
-import scale_octave
+import lib.scale_octave as scale_octave
 
 def test_scale_tone1200():
     test = scale_octave.ScaleOctave()

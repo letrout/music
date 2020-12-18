@@ -21,7 +21,7 @@ __status__ = "Prototype"
 
 import pandas as pd
 
-import note
+import lib.note as note
 
 MIN_CENTS = 0
 

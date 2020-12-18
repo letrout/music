@@ -7,10 +7,8 @@ __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
 import pytest
-import sys
 
-sys.path.insert(0, './lib')
-import note
+import lib.note as note
 
 def test_note_freq_too_low():
     with pytest.raises(ValueError):
