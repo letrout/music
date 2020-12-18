@@ -11,6 +11,14 @@ dictionary of degree: tone, where 'degree' is the degree of the scale
 the degree.
 """
 
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
 import lib.note as note
 
 MIN_CENTS = 0
