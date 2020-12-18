@@ -13,7 +13,7 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
-import scale
+import lib.scale as scale
 
 MAX_CENTS = 1200
 OCTAVE_CENTS = MAX_CENTS
