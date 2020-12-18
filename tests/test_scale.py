@@ -142,6 +142,7 @@ def test_add_tone_below_degree_too_far():
         1: 0, 2: 200, 3: 200, 4: 300, 5: 200, 6: 200, 7: 100
     }
 
+
 def test_add_tone_non_numeric():
     test = scale.Scale(tones=[200, 400, 700, 900, 1100, 1200])
     retval = test.add_tone(cents='Csharp')
@@ -231,21 +232,26 @@ def test_move_degree_root():
     assert test.degrees == [1, 2, 3, 4, 5, 6, 7, 8]
     assert test.tones == [0, 200, 400, 500, 700, 900, 1100, 1200]
 
+
 def test_tone_from_degree():
     test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
     assert test.tone_from_degree(3) == 400
+
 
 def test_tone_from_degree_nonexist():
     test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
     assert test.tone_from_degree(15) is None
 
+
 def test_degree_from_tone():
     test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
     assert test.degree_from_tone(400) == 3
 
+
 def test_degree_from_tone_nonexist():
     test = scale.Scale(tones=[200, 400, 500, 700, 900, 1100, 1200])
     assert test.degree_from_tone(201) is None
+
 
 def test_degree_tones():
     test = scale.Scale(tones=[200, 400, 500])
