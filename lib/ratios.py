@@ -10,7 +10,7 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
-from math import log2
+from numpy import log2
 
 OCTAVE_CENTS = 1200
 

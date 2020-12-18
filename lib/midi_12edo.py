@@ -11,7 +11,7 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
-from math import log2
+from numpy import log2
 import pandas as pd
 
 CONCERT_A_HZ = 440
