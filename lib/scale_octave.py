@@ -5,6 +5,14 @@ A class to hold a collection of tones defined as a scale
 Extends ./scale.py
 """
 
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
 import scale
 
 MAX_CENTS = 1200

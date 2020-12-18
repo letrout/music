@@ -2,6 +2,14 @@
 Mathematical ratios for musical calculations
 """
 
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
 from numpy import log2
 
 OCTAVE_CENTS = 1200

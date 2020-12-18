@@ -3,6 +3,14 @@ MIDI utilities for 12-EDO tuning
 From https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
 """
 
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
 from numpy import log2
 import pandas as pd
 

@@ -11,6 +11,14 @@ scale (with the root being 1) and 'tone' is the number of cents above the root
 for the degree.
 """
 
+__author__ = "Joel Luth"
+__copyright__ = "Copyright 2020, Joel Luth"
+__credits__ = ["Joel Luth"]
+__license__ = "MIT"
+__maintainer__ = "Joel Luth"
+__email__ = "joel.luth@gmail.com"
+__status__ = "Prototype"
+
 import pandas as pd
 
 import note
