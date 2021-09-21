@@ -5,3 +5,7 @@ Run pytest from the parent (music/) directory, e.g.
 or
 
   python -m pytest --cov=lib tests/
+
+to get the lines missing coverage
+
+  python3 -m pytest --cov=lib --cov-report term-missing tests/
