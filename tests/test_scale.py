@@ -11,6 +11,7 @@ import pytest
 import lib.note as note
 import lib.scale as scale
 
+
 def test_scale_noroot():
     test = scale.Scale()
     assert test.root_note is None
