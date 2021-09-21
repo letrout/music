@@ -11,6 +11,7 @@ import sys
 sys.path.insert(0, '../lib')
 import scale_12edo
 
+
 MAJOR = [scale_12edo.WHOLE,
          scale_12edo.WHOLE,
          scale_12edo.HALF,
