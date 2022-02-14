@@ -26,7 +26,7 @@ def test_notes_df(index, rel, expected):
 
 
 @pytest.mark.parametrize(
-    'midi, , octave',
+    'midi, octave',
     [
         (5, -1),
         (21, 0),
@@ -40,7 +40,7 @@ def test_octave_from_midi(midi, octave):
 
 
 @pytest.mark.parametrize(
-    'midi, , freq',
+    'midi, freq',
     [
         (69, 440)
     ],
@@ -51,7 +51,7 @@ def test_freq_from_midi(midi, freq):
 
 
 @pytest.mark.parametrize(
-    'freq, , midi',
+    'freq, midi',
     [
         (440, 69)
     ],
@@ -62,7 +62,7 @@ def test_midi_from_freq(freq, midi):
 
 
 @pytest.mark.parametrize(
-    'midi, , key',
+    'midi, key',
     [
         (100, 80)
     ],
