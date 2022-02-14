@@ -6,104 +6,79 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
+import pytest
+
 import lib.scale_12edo as scale_12edo
 
 SEMI = 100
 WHOLE = SEMI * 2
 
 
-def test_scale_semitone():
-    test = scale_12edo.Scale12EDO(tones=[SEMI])
-    assert test.degrees == [1, 2]
-    assert test.tones == [0, SEMI]
+@pytest.mark.parametrize(
+    'initial, degrees, tones',
+    [
+        ([SEMI], [1, 2], [0, SEMI]),
+        ([WHOLE], [1, 2], [0, WHOLE]),
+        ([101], [1], [0]),
+        (None, [1], [0])
+    ],
+)
+def test_scale(initial, degrees, tones):
+    test = scale_12edo.Scale12EDO(tones=initial)
+    assert test.degrees == degrees
+    assert test.tones == tones
 
 
-def test_scale_add_semitone():
-    test = scale_12edo.Scale12EDO()
-    assert test.tones == [0]
-    retval = test.add_tone(SEMI)
-    assert retval == 2
-    assert test.degrees == [1, 2]
-    assert test.tones == [0, SEMI]
+@pytest.mark.parametrize(
+    'initial, add, new, degrees, tones',
+    [
+        (None, SEMI, 2, [1, 2], [0, SEMI]),
+        (None, WHOLE, 2, [1, 2], [0, WHOLE]),
+        (None, 101, None, [1], [0]),
+    ]
+)
+def test_scale_add(initial, add, new, degrees, tones):
+    test = scale_12edo.Scale12EDO(tones=initial)
+    retval = test.add_tone(add)
+    assert retval == new
+    assert test.degrees == degrees
+    assert test.tones == tones
 
 
-def test_scale_wholetone():
-    test = scale_12edo.Scale12EDO(tones=[WHOLE])
-    assert test.degrees == [1, 2]
-    assert test.tones == [0, WHOLE]
+@pytest.mark.parametrize(
+    'initial, degree, cents, new, degree_tones',
+    [
+        (list(range(100, 1200, 100)), 12, 200, None,
+            {1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+             9: 800, 10: 900, 11: 1000, 12: 1100}),
+        (list(range(100, 1200, 100)), 3, 111, None,
+            {1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+             9: 800, 10: 900, 11: 1000, 12: 1100}),
+    ]
+)
+def test_scale_insert_tone(initial, degree, cents, new, degree_tones):
+    test = scale_12edo.Scale12EDO(tones=initial)
+    retval = test.add_tone_rel_degree(degree=degree, cents=cents)
+    assert retval == new
+    assert test.degree_tones == degree_tones
 
 
-def test_scale_add_wholetone():
-    test = scale_12edo.Scale12EDO()
-    assert test.degrees == [1]
-    assert test.tones == [0]
-    retval = test.add_tone(WHOLE)
-    assert retval == 2
-    assert test.degrees == [1, 2]
-    assert test.tones == [0, WHOLE]
-
-
-def test_scale_nontet():
-    test = scale_12edo.Scale12EDO(tones=[101])
-    assert test.degrees == [1]
-    assert test.tones == [0]
-
-
-def test_scale_add_nontet():
-    test = scale_12edo.Scale12EDO()
-    assert test.degrees == [1]
-    assert test.tones == [0]
-    retval = test.add_tone(101)
-    assert retval is None
-    assert test.degrees == [1]
-    assert test.tones == [0]
-
-
-def test_scale_insert_tone_overmax():
-    test = scale_12edo.Scale12EDO(tones=list(range(100, 1200, 100)))
-    retval = test.add_tone_rel_degree(degree=12, cents=200)
-    assert retval is None
-    assert test.degree_tones == {
-        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
-        9: 800, 10: 900, 11: 1000, 12: 1100
-    }
-
-
-def test_scale_insert_tone_nonet():
-    test = scale_12edo.Scale12EDO(tones=list(range(100, 1200, 100)))
-    retval = test.add_tone_rel_degree(degree=3, cents=111)
-    assert retval is None
-    assert test.degree_tones == {
-        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
-        9: 800, 10: 900, 11: 1000, 12: 1100
-    }
-
-
-def test_scale_move_tone_overmax():
-    test = scale_12edo.Scale12EDO(tones=list(range(100, 1200, 100)))
-    retval = test.move_degree(degree=12, cents=200)
-    assert retval == -1
-    assert test.degree_tones == {
-        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
-        9: 800, 10: 900, 11: 1000, 12: 1100
-    }
-
-
-def test_scale_move_tone_up_nonet():
-    test = scale_12edo.Scale12EDO(tones=list(range(100, 1200, 100)))
-    retval = test.move_degree(degree=3, cents=1)
-    assert retval == -1
-    assert test.degree_tones == {
-        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
-        9: 800, 10: 900, 11: 1000, 12: 1100
-    }
-
-
-def test_scale_move_tone_down_nonet():
-    test = scale_12edo.Scale12EDO(tones=list(range(100, 1200, 100)))
-    retval = test.move_degree(degree=3, cents=-1)
-    assert retval == -1
-    assert test.degree_tones == {
-        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
-        9: 800, 10: 900, 11: 1000, 12: 1100
-    }
+@pytest.mark.parametrize(
+    'initial, degree, cents, new, degree_tones',
+    [
+        (list(range(100, 1200, 100)), 12, 200, -1,
+            {1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+             9: 800, 10: 900, 11: 1000, 12: 1100}),
+        (list(range(100, 1200, 100)), 3, 1, -1,
+            {1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+             9: 800, 10: 900, 11: 1000, 12: 1100}),
+        (list(range(100, 1200, 100)), 3, -1, -1,
+            {1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+             9: 800, 10: 900, 11: 1000, 12: 1100}),
+    ]
+)
+def test_scale_move_degree(initial, degree, cents, new, degree_tones):
+    test = scale_12edo.Scale12EDO(tones=initial)
+    retval = test.move_degree(degree=degree, cents=cents)
+    assert retval == new
+    assert test.degree_tones == degree_tones
