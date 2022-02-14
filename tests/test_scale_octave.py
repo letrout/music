@@ -6,40 +6,51 @@ __maintainer__ = "Joel Luth"
 __email__ = "joel.luth@gmail.com"
 __status__ = "Prototype"
 
+import pytest
+
 import lib.scale_octave as scale_octave
 
 
-def test_scale_tone1200():
-    test = scale_octave.ScaleOctave()
-    retval = test.add_tone(1200)
-    assert retval == 2
-    assert test.degrees == [1, 2]
-    assert test.tones == [0, 1200]
+@pytest.mark.parametrize(
+    'initial, tone, new, degrees, tones',
+    [
+        (None, 1200, 2, [1, 2], [0, 1200]),
+        (None, scale_octave.OCTAVE_CENTS + 1, None, [1], [0])
+    ],
+)
+def test_scale_add_tone(initial, tone, new, degrees, tones):
+    test = scale_octave.ScaleOctave(tones=initial)
+    retval = test.add_tone(tone)
+    assert retval == new
+    assert test.degrees == degrees
+    assert test.tones == tones
 
 
-def test_scale_tone_overmax():
-    test = scale_octave.ScaleOctave()
-    retval = test.add_tone(scale_octave.OCTAVE_CENTS + 1)
-    assert retval is None
-    assert test.degrees == [1]
-    assert test.tones == [0]
+@pytest.mark.parametrize(
+    'initial, degree, cents, new, degree_tones',
+    [
+        (list(range(100, 1200, 100)), 12, 200, None,
+            {1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+             9: 800, 10: 900, 11: 1000, 12: 1100}),
+    ],
+)
+def test_scale_add_tone_rel_degree(initial, degree, cents, new, degree_tones):
+    test = scale_octave.ScaleOctave(tones=initial)
+    retval = test.add_tone_rel_degree(degree=degree, cents=cents)
+    assert retval == new
+    assert test.degree_tones == degree_tones
 
 
-def test_scale_insert_tone_overmax():
-    test = scale_octave.ScaleOctave(tones=list(range(100, 1200, 100)))
-    retval = test.add_tone_rel_degree(degree=12, cents=200)
-    assert retval is None
-    assert test.degree_tones == {
-        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
-        9: 800, 10: 900, 11: 1000, 12: 1100
-    }
-
-
-def test_scale_move_tone_overmax():
-    test = scale_octave.ScaleOctave(tones=list(range(100, 1200, 100)))
-    retval = test.move_degree(degree=11, cents=201)
-    assert retval == -1
-    assert test.degree_tones == {
-        1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
-        9: 800, 10: 900, 11: 1000, 12: 1100
-    }
+@pytest.mark.parametrize(
+    'initial, degree, cents, new, degree_tones',
+    [
+        (list(range(100, 1200, 100)), 11, 201, -1,
+            {1: 0, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700,
+             9: 800, 10: 900, 11: 1000, 12: 1100}),
+    ],
+)
+def test_scale_move_degree(initial, degree, cents, new, degree_tones):
+    test = scale_octave.ScaleOctave(tones=initial)
+    retval = test.move_degree(degree=degree, cents=cents)
+    assert retval == new
+    assert test.degree_tones == degree_tones
