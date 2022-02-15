@@ -11,16 +11,27 @@ import pytest
 import lib.ratios as ratios
 
 
-def test_cents_neg():
-    test = ratios.cents(880, 440)
-    assert test == -1200
+@pytest.mark.parametrize(
+    'freq1, freq2, cents',
+    [
+        (880, 440, -1200),
+        (440, 880, 1200),
+        (440, 440, 0),
+    ],
+)
+def test_cents(freq1, freq2, cents):
+    test = ratios.cents(freq1, freq2)
+    assert test == cents
 
 
-def test_cents_pos():
-    test = ratios.cents(440, 880)
-    assert test == 1200
-
-
-def test_freq_ratio():
-    test = ratios.freq_ratio(2400)
-    assert test == 4
+@pytest.mark.parametrize(
+    'cents, ratio',
+    [
+        (2400, 4),
+        (0, 1),
+        (-1200, 0.5),
+    ],
+)
+def test_freq_ratio(cents, ratio):
+    test = ratios.freq_ratio(cents)
+    assert test == ratio

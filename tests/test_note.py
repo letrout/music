@@ -10,23 +10,55 @@ import pytest
 
 import lib.note as note
 
-
-def test_note_freq_too_low():
-    with pytest.raises(ValueError):
-        test = note.Note(-1)
+FREQ_ERROR_MSG = f'frequency Hz must be between 0 and {note.MAX_FREQ_HZ}'
 
 
-def test_note_freq_ok():
-    test = note.Note(440)
-    assert test.freq == 440
+@pytest.mark.parametrize(
+    'freq, expected',
+    [
+        (440, 440),
+    ],
+)
+def test_note_freq_ok(freq, expected):
+    test = note.Note(freq)
+    assert test.freq == expected
 
 
-def test_note_freq_too_high():
-    with pytest.raises(ValueError):
-        test = note.Note(100 * 1024 * 1024)
+@pytest.mark.parametrize(
+    'freq, expected',
+    [
+        (-1, FREQ_ERROR_MSG),
+        (0, FREQ_ERROR_MSG),
+        (note.MAX_FREQ_HZ + 1, FREQ_ERROR_MSG),
+    ],
+)
+def test_note_freq_error(freq, expected):
+    with pytest.raises(ValueError) as excinfo:
+        test = note.Note(freq)
+    assert str(excinfo.value) == expected
 
 
-def test_note_freq_change():
-    test = note.Note(440)
-    test.freq = 450
-    assert test.freq == 450
+@pytest.mark.parametrize(
+    'freq, change, expected',
+    [
+        (440, 450, 450),
+    ],
+)
+def test_note_freq_change(freq, change, expected):
+    test = note.Note(freq)
+    test.freq = change
+    assert test.freq == expected
+
+
+@pytest.mark.parametrize(
+    'freq, change, expected',
+    [
+        (440, 0, FREQ_ERROR_MSG),
+        (440, note.MAX_FREQ_HZ + 1, FREQ_ERROR_MSG),
+    ],
+)
+def test_note_freq_change_error(freq, change, expected):
+    test = note.Note(freq)
+    with pytest.raises(ValueError) as excinfo:
+        test.freq = change
+    assert str(excinfo.value) == expected
